@@ -1,11 +1,61 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+// --- BLOQUE DEL SERVIDOR (FRONTMATTER) ---
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// 1. Importa el componente que vas a usar.
+import PokedexGrid from '../components/PokedexGrid.astro';
+
+// 2. Realiza la llamada a la API y declara la variable 'allPokemons'.
+//    Esta es la parte que probablemente te falta o está en el lugar incorrecto.
+const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=1025');
+const data = await response.json();
+const allPokemons = data.results; 
+// Al estar aquí, 'allPokemons' está disponible para el HTML de abajo.
+
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<!-- --- PLANTILLA HTML --- -->
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width" />
+  <title>Mi Pokédex</title>
+  <style is:global>
+    /* Estilos globales */
+    body { font-family: sans-serif; background-color: #333; color: white; margin: 0; padding: 1rem; }
+    h1 { text-align: center; color: #ffcc00; text-shadow: 2px 2px 4px #000; }
+
+    /* Estilos de la tarjeta Pokémon */
+    .pokemon-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      text-align: center;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s;
+      text-transform: capitalize;
+      display: block;
+      color: #333;
+      text-decoration: none;
+    }
+    .pokemon-card:hover {
+      transform: scale(1.05);
+    }
+    .pokemon-card img {
+      width: 96px;
+      height: 96px;
+      margin-bottom: 0.5rem;
+    }
+    .pokemon-card h2 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>Mi Pokédex</h1>
+  
+  <!-- Ahora 'allPokemons' SÍ existe y se puede pasar como prop -->
+  <PokedexGrid allPokemons={allPokemons} />
+
+</body>
+</html>
